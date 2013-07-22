@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{37FB7981-1865-468E-8937-3C929D0CD8D4}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeOutput>../bin/win_x86/strict/test.exe</NMakeOutput>
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeBuildCommandLine>../tests/makeit.cmd debug win_x86 -t crypto</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../tests/makeit.cmd debug win_x86 rebuild -t text</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../tests/makeit.cmd debug win_x86 clean -t text</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeOutput>libc+.exe</NMakeOutput>
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="..\c+\array.hc" />
+    <None Include="..\c+\buffer.hc" />
+    <None Include="..\c+\C+.hc" />
+    <None Include="..\c+\crc.hc" />
+    <None Include="..\c+\crypto\aes.hc" />
+    <None Include="..\c+\crypto\bigint.hc" />
+    <None Include="..\c+\crypto\blowfish.hc" />
+    <None Include="..\c+\crypto\cipher.hc" />
+    <None Include="..\c+\crypto\md5.hc" />
+    <None Include="..\c+\crypto\newdes96.hc" />
+    <None Include="..\c+\crypto\prime_values.inc" />
+    <None Include="..\c+\crypto\random.hc" />
+    <None Include="..\c+\crypto\sha1.hc" />
+    <None Include="..\c+\crypto\sha2.hc" />
+    <None Include="..\c+\crypto\xdatasec.hc" />
+    <None Include="..\c+\csup\algo.hc" />
+    <None Include="..\c+\csup\bector.hc" />
+    <None Include="..\c+\csup\csupport.hc" />
+    <None Include="..\c+\csup\object.hc" />
+    <None Include="..\c+\csup\tls.hc" />
+    <None Include="..\c+\datetime.hc" />
+    <None Include="..\c+\dicto.hc" />
+    <None Include="..\c+\file.hc" />
+    <None Include="..\c+\minilog.hc" />
+    <None Include="..\c+\program.hc" />
+    <None Include="..\c+\sar.hc" />
+    <None Include="..\c+\slist.hc" />
+    <None Include="..\c+\stdf.hc" />
+    <None Include="..\c+\string.hc" />
+    <None Include="..\c+\tester.hc" />
+    <None Include="..\c+\text\ctoken.hc" />
+    <None Include="..\c+\text\def.hc" />
+    <None Include="..\c+\text\json.hc" />
+    <None Include="..\c+\text\mime.hc" />
+    <None Include="..\c+\text\regex.hc" />
+    <None Include="..\c+\text\tmpl.hc" />
+    <None Include="..\c+\text\url.hc" />
+    <None Include="..\c+\xdata.hc" />
+    <None Include="..\tests\basic\bigint.txt" />
+    <None Include="..\tests\basic\bigint1.txt" />
+    <None Include="..\tests\basic\bigintgen.py" />
+    <None Include="..\tests\basic\makefile" />
+    <None Include="..\tests\crypto\makefile" />
+    <None Include="..\tests\makeit.cmd" />
+    <None Include="..\tests\predef.mk" />
+    <None Include="..\tests\rules.mk" />
+    <None Include="..\tests\text\makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\tests\basic\array.c" />
+    <ClCompile Include="..\tests\basic\bigint.c" />
+    <ClCompile Include="..\tests\basic\buffer.c" />
+    <ClCompile Include="..\tests\basic\dicto.c" />
+    <ClCompile Include="..\tests\basic\file.c" />
+    <ClCompile Include="..\tests\basic\program.c" />
+    <ClCompile Include="..\tests\basic\safeformat.c" />
+    <ClCompile Include="..\tests\basic\string.c" />
+    <ClCompile Include="..\tests\crypto\aes.c" />
+    <ClCompile Include="..\tests\crypto\aesxex.c" />
+    <ClCompile Include="..\tests\crypto\blowfish.c" />
+    <ClCompile Include="..\tests\crypto\hmacmd5.c" />
+    <ClCompile Include="..\tests\crypto\hmacsha1.c" />
+    <ClCompile Include="..\tests\crypto\hmacsha2.c" />
+    <ClCompile Include="..\tests\crypto\md5.c" />
+    <ClCompile Include="..\tests\crypto\md5gdst.c" />
+    <ClCompile Include="..\tests\crypto\modpow2.c" />
+    <ClCompile Include="..\tests\crypto\prime.c" />
+    <ClCompile Include="..\tests\crypto\random.c" />
+    <ClCompile Include="..\tests\crypto\rsa.c" />
+    <ClCompile Include="..\tests\crypto\rsagen.c" />
+    <ClCompile Include="..\tests\crypto\sha1.c" />
+    <ClCompile Include="..\tests\crypto\sha2.c" />
+    <ClCompile Include="..\tests\text\re.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

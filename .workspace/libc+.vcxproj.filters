@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="C+">
+      <UniqueIdentifier>{3577ae78-ccd1-4500-9a5f-8acba401e675}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C+\crypto">
+      <UniqueIdentifier>{4bdc9f26-f5f6-4a18-884d-ebfe458963a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C+\text">
+      <UniqueIdentifier>{97fee3cc-74ef-4539-a001-d3656a29a7fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{104ba689-8a40-4dbe-a04b-356a5f199406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\basic">
+      <UniqueIdentifier>{f0c5092f-0702-4b85-b8b3-4a83cab7e569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\text">
+      <UniqueIdentifier>{197da519-688a-417e-82d3-7e72b89b0ccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\crypto">
+      <UniqueIdentifier>{df268878-7f8e-4e6a-bc7e-27f8cf435e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C+\csup">
+      <UniqueIdentifier>{a99fc38c-5ff2-4f36-b6ca-c5122da62019}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\c+\array.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\buffer.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\C+.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\crc.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\datetime.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\dicto.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\file.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\minilog.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\program.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\sar.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\slist.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\stdf.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\string.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\xdata.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\crypto\aes.hc">
+      <Filter>C+\crypto</Filter>
+    </None>
+    <None Include="..\c+\crypto\bigint.hc">
+      <Filter>C+\crypto</Filter>
+    </None>
+    <None Include="..\c+\crypto\blowfish.hc">
+      <Filter>C+\crypto</Filter>
+    </None>
+    <None Include="..\c+\crypto\cipher.hc">
+      <Filter>C+\crypto</Filter>
+    </None>
+    <None Include="..\c+\crypto\md5.hc">
+      <Filter>C+\crypto</Filter>
+    </None>
+    <None Include="..\c+\crypto\newdes96.hc">
+      <Filter>C+\crypto</Filter>
+    </None>
+    <None Include="..\c+\crypto\prime_values.inc">
+      <Filter>C+\crypto</Filter>
+    </None>
+    <None Include="..\c+\crypto\random.hc">
+      <Filter>C+\crypto</Filter>
+    </None>
+    <None Include="..\c+\crypto\sha1.hc">
+      <Filter>C+\crypto</Filter>
+    </None>
+    <None Include="..\c+\crypto\sha2.hc">
+      <Filter>C+\crypto</Filter>
+    </None>
+    <None Include="..\c+\crypto\xdatasec.hc">
+      <Filter>C+\crypto</Filter>
+    </None>
+    <None Include="..\c+\text\def.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\c+\text\ctoken.hc">
+      <Filter>C+\text</Filter>
+    </None>
+    <None Include="..\c+\text\json.hc">
+      <Filter>C+\text</Filter>
+    </None>
+    <None Include="..\c+\text\mime.hc">
+      <Filter>C+\text</Filter>
+    </None>
+    <None Include="..\c+\text\regex.hc">
+      <Filter>C+\text</Filter>
+    </None>
+    <None Include="..\c+\text\tmpl.hc">
+      <Filter>C+\text</Filter>
+    </None>
+    <None Include="..\c+\text\url.hc">
+      <Filter>C+\text</Filter>
+    </None>
+    <None Include="..\tests\basic\bigint.txt">
+      <Filter>Tests\basic</Filter>
+    </None>
+    <None Include="..\tests\basic\bigint1.txt">
+      <Filter>Tests\basic</Filter>
+    </None>
+    <None Include="..\tests\basic\bigintgen.py">
+      <Filter>Tests\basic</Filter>
+    </None>
+    <None Include="..\tests\basic\makefile">
+      <Filter>Tests\basic</Filter>
+    </None>
+    <None Include="..\tests\makeit.cmd">
+      <Filter>Tests</Filter>
+    </None>
+    <None Include="..\tests\predef.mk">
+      <Filter>Tests</Filter>
+    </None>
+    <None Include="..\tests\rules.mk">
+      <Filter>Tests</Filter>
+    </None>
+    <None Include="..\tests\text\makefile">
+      <Filter>Tests\text</Filter>
+    </None>
+    <None Include="..\c+\csup\algo.hc">
+      <Filter>C+\csup</Filter>
+    </None>
+    <None Include="..\c+\csup\bector.hc">
+      <Filter>C+\csup</Filter>
+    </None>
+    <None Include="..\c+\csup\csupport.hc">
+      <Filter>C+\csup</Filter>
+    </None>
+    <None Include="..\c+\csup\object.hc">
+      <Filter>C+\csup</Filter>
+    </None>
+    <None Include="..\c+\csup\tls.hc">
+      <Filter>C+\csup</Filter>
+    </None>
+    <None Include="..\c+\tester.hc">
+      <Filter>C+</Filter>
+    </None>
+    <None Include="..\tests\crypto\makefile">
+      <Filter>Tests\crypto</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\tests\basic\array.c">
+      <Filter>Tests\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\basic\bigint.c">
+      <Filter>Tests\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\basic\buffer.c">
+      <Filter>Tests\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\basic\dicto.c">
+      <Filter>Tests\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\basic\file.c">
+      <Filter>Tests\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\basic\program.c">
+      <Filter>Tests\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\basic\safeformat.c">
+      <Filter>Tests\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\basic\string.c">
+      <Filter>Tests\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\text\re.c">
+      <Filter>Tests\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\aes.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\aesxex.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\blowfish.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\hmacmd5.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\hmacsha1.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\hmacsha2.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\md5.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\md5gdst.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\modpow2.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\prime.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\random.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\rsa.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\rsagen.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\sha1.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\crypto\sha2.c">
+      <Filter>Tests\crypto</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
