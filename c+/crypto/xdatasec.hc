@@ -21,7 +21,7 @@ http://www.gnu.org/licenses/
 #ifndef C_once_9CC5C44A_A9F9_40B3_85DA_10A2EE2AD4FC
 #define C_once_9CC5C44A_A9F9_40B3_85DA_10A2EE2AD4FC
 
-#include "xdata.hc"
+#include "../xdata.hc"
 #include "sha1.hc"
 #include "sha2.hc"
 #include "md5.hc"

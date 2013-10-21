@@ -92,7 +92,7 @@ __No_Inline void C_Safe_Format(char const *fmt,C_FORMAT_VALUE *k)
 
 #define SFORMAT_NU(fv,N,...) C_EVAL(C_CONCAT2(SFORMAT_K,C_ARGS_COUNT(__VA_ARGS__))(fv,N,__VA_ARGS__))
 
-#define __$format(Fmt,...) \
+#define __Sformat(Fmt,...) \
     do { \
         C_FORMAT_VALUE fv[C_ARGS_COUNT(__VA_ARGS__)+1]; \
         SFORMAT_NU(fv,0,__VA_ARGS__); \
@@ -101,8 +101,8 @@ __No_Inline void C_Safe_Format(char const *fmt,C_FORMAT_VALUE *k)
 
 int main()
 {
-  __$format("%? at %?",$4(0x70000000L),$S("hello world!"));
-  __$format("%? at %?",1,"hello world!");
+  __Sformat("%? at %?",$4(0x70000000L),$S("hello world!"));
+  __Sformat("%? at %?",1,"hello world!");
 }
 
 

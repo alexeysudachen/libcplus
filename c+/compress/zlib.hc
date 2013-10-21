@@ -21,8 +21,8 @@ http://www.gnu.org/licenses/
 #ifndef C_once_EB7941BA_38FE_4713_AFDA_5DB7AC656213
 #define C_once_EB7941BA_38FE_4713_AFDA_5DB7AC656213
 
-#include "C+.hc"
-#include "buffer.hc"
+#include "../C+.hc"
+#include "../buffer.hc"
 
 #ifdef _BUILTIN
 # define _C_ZLIB_BUILTIN

@@ -30,8 +30,8 @@ http://www.gnu.org/licenses/
 #define _C_SHA2_BUILTIN
 #endif
 
-#include "C+.hc"
-#include "crc.hc"
+#include "../C+.hc"
+#include "../crc.hc"
 
 typedef struct _C_SHA2
   {

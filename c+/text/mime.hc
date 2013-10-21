@@ -21,8 +21,8 @@ http://www.gnu.org/licenses/
 #ifndef C_once_E5DC0CBD_6EF6_4E8C_A4F5_CF78FA971011
 #define C_once_E5DC0CBD_6EF6_4E8C_A4F5_CF78FA971011
 
-#include "C+.hc"
-#include "string.hc"
+#include "../C+.hc"
+#include "../string.hc"
 
 #ifdef _BUILTIN
 #define _C_MIME_BUILTIN

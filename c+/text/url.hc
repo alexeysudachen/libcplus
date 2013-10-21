@@ -23,6 +23,7 @@ http://www.gnu.org/licenses/
 
 #include "../C+.hc"
 #include "../string.hc"
+#include "../dicto.hc"
 
 #ifdef _BUILTIN
 #define _C_URL_BUILTIN

@@ -36,9 +36,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <NMakeOutput>../bin/win_x86/strict/test.exe</NMakeOutput>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeBuildCommandLine>../tests/makeit.cmd debug win_x86 -t crypto</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../tests/makeit.cmd debug win_x86 rebuild -t text</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../tests/makeit.cmd debug win_x86 clean -t text</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>../tests/makeit.cmd debug win_x86 -t db</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../tests/makeit.cmd debug win_x86 rebuild -t db</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../tests/makeit.cmd debug win_x86 clean -t db</NMakeCleanCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeOutput>libc+.exe</NMakeOutput>
@@ -68,6 +68,11 @@
     <None Include="..\c+\csup\object.hc" />
     <None Include="..\c+\csup\tls.hc" />
     <None Include="..\c+\datetime.hc" />
+    <None Include="..\c+\db\mysql.hc" />
+    <None Include="..\c+\db\xddb.hc" />
+    <None Include="..\c+\db\xddbmsql.hc" />
+    <None Include="..\c+\db\xddbsql3.hc" />
+    <None Include="..\c+\db\xddbsql_.hc" />
     <None Include="..\c+\dicto.hc" />
     <None Include="..\c+\file.hc" />
     <None Include="..\c+\minilog.hc" />
@@ -90,6 +95,7 @@
     <None Include="..\tests\basic\bigintgen.py" />
     <None Include="..\tests\basic\makefile" />
     <None Include="..\tests\crypto\makefile" />
+    <None Include="..\tests\db\makefile" />
     <None Include="..\tests\makeit.cmd" />
     <None Include="..\tests\predef.mk" />
     <None Include="..\tests\rules.mk" />
@@ -119,6 +125,7 @@
     <ClCompile Include="..\tests\crypto\rsagen.c" />
     <ClCompile Include="..\tests\crypto\sha1.c" />
     <ClCompile Include="..\tests\crypto\sha2.c" />
+    <ClCompile Include="..\tests\db\xddb.c" />
     <ClCompile Include="..\tests\text\re.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

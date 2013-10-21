@@ -30,9 +30,9 @@ http://www.gnu.org/licenses/
 #define _C_MD5_BUILTIN
 #endif
 
-#include "C+.hc"
-#include "crc.hc"
-#include "string.h"
+#include "../C+.hc"
+#include "../crc.hc"
+#include "../string.hc"
 
 enum { C_MD5_DIGEST_SIZE = 16 };
 

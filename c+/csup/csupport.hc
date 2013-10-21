@@ -43,20 +43,20 @@ it is included by C+.hc
 #endif
 
 #define __Sformat1(Fmt,a) C_Safe_Format(Fmt,1,C_PARAM_1(__quoted_format_argument__,a))
-#define __Raise_Sformat1(Err,Fmt,a) C_Raise(Err,__$format1(Fmt,a),__FILE__,__LINE__)
-#define __Fatal_Sformat1(Fmt,a) C_Fatal(C_FATAL_ERROR,__$format1(Fmt,a),__FILE__,__LINE__)
+#define __Raise_Sformat1(Err,Fmt,a) C_Raise(Err,__Sformat1(Fmt,a),__FILE__,__LINE__)
+#define __Fatal_Sformat1(Fmt,a) C_Fatal(C_FATAL_ERROR,__Sformat1(Fmt,a),__FILE__,__LINE__)
 #define __Sformat2(Fmt,a,b) C_Safe_Format(Fmt,2,C_PARAM_2(__quoted_format_argument__,a,b))
-#define __Raise_Sformat2(Err,Fmt,a,b) C_Raise(Err,__$format2(Fmt,a,b),__FILE__,__LINE__)
-#define __Fatal_Sformat2(Fmt,a,b) C_Fatal(C_FATAL_ERROR,__$format2(Fmt,a,b),__FILE__,__LINE__)
+#define __Raise_Sformat2(Err,Fmt,a,b) C_Raise(Err,__Sformat2(Fmt,a,b),__FILE__,__LINE__)
+#define __Fatal_Sformat2(Fmt,a,b) C_Fatal(C_FATAL_ERROR,__Sformat2(Fmt,a,b),__FILE__,__LINE__)
 #define __Sformat3(Fmt,a,b,c) C_Safe_Format(Fmt,3,C_PARAM_3(__quoted_format_argument__,a,b,c))
-#define __Raise_Sformat3(Err,Fmt,a,b,c) C_Raise(Err,__$format3(Fmt,a,b,c),__FILE__,__LINE__)
-#define __Fatal_Sformat3(Fmt,a,b,c) C_Fatal(C_FATAL_ERROR,__$format3(Fmt,a,b,c),__FILE__,__LINE__)
+#define __Raise_Sformat3(Err,Fmt,a,b,c) C_Raise(Err,__Sformat3(Fmt,a,b,c),__FILE__,__LINE__)
+#define __Fatal_Sformat3(Fmt,a,b,c) C_Fatal(C_FATAL_ERROR,__Sformat3(Fmt,a,b,c),__FILE__,__LINE__)
 #define __Sformat4(Fmt,a,b,c,d) C_Safe_Format(Fmt,4,C_PARAM_4(__quoted_format_argument__,a,b,c,d))
-#define __Raise_Sformat4(Err,Fmt,a,b,c,d) C_Raise(Err,__$format4(Fmt,a,b,c,d),__FILE__,__LINE__)
-#define __Fatal_Sformat4(Fmt,a,b,c,d) C_Fatal(C_FATAL_ERROR,__$format4(Fmt,a,b,c,d),__FILE__,__LINE__)
+#define __Raise_Sformat4(Err,Fmt,a,b,c,d) C_Raise(Err,__Sformat4(Fmt,a,b,c,d),__FILE__,__LINE__)
+#define __Fatal_Sformat4(Fmt,a,b,c,d) C_Fatal(C_FATAL_ERROR,__Sformat4(Fmt,a,b,c,d),__FILE__,__LINE__)
 #define __Sformat5(Fmt,a,b,c,d,e) C_Safe_Format(Fmt,5,C_PARAM_5(__quoted_format_argument__,a,b,c,d,e))
-#define __Raise_Sformat5(Err,Fmt,a,b,c,d,e) C_Raise(Err,__$format5(Fmt,a,b,c,d,e),__FILE__,__LINE__)
-#define __Fatal_Sformat5(Fmt,a,b,c,d,e) C_Fatal(C_FATAL_ERROR,__$format5(Fmt,a,b,c,d,e),__FILE__,__LINE__)
+#define __Raise_Sformat5(Err,Fmt,a,b,c,d,e) C_Raise(Err,__Sformat5(Fmt,a,b,c,d,e),__FILE__,__LINE__)
+#define __Fatal_Sformat5(Fmt,a,b,c,d,e) C_Fatal(C_FATAL_ERROR,__Sformat5(Fmt,a,b,c,d,e),__FILE__,__LINE__)
 
 #define __Try_Ptr(Ptr) \
 	switch (setjmp(C_Push_JmpBuf()->b)) if (1) { \
@@ -73,8 +73,8 @@ it is included by C+.hc
 	else if (1) default: C_Raise(C_RERAISE_CURRENT_ERROR,0,0,0); \
 	else case e:    
 
-#define __Auto		__Auto_Ptr(0)
-#define __Try		__Try_Ptr(0)
+#define __Auto   __Auto_Ptr(0)
+#define __Try    __Try_Ptr(0)
 
 #define __Safe_Prolog_Epilog(Prolog,Epilog)  \
 	switch ( setjmp(C_Push_JmpBuf()->b) ) \
@@ -82,7 +82,7 @@ it is included by C+.hc
 	if (1) /* on second while's step if executed without errors */ \
 		{ Epilog; C_Pop_JmpBuf(); break; } \
 	  else if (1) /* if unexpected */ \
-		{ Epilog; C_Raise_Occured(); } \
+		{ Epilog; __Raise_Occured(); } \
 	  else /* there is protected code */ \
 	  /* switch jumps to here */ \
 	case 0: if (1) { Prolog; goto C_LOCAL_ID(ap_Body); } else \
@@ -126,7 +126,7 @@ it is included by C+.hc
 		C_LOCAL_ID(body): \
 	/* first while's step continues here */
 
-#define __Try_Exit(exit_code) __Try_Specific(default: Error_Exit(exit_code)) __Auto
+#define __Try_Exit __Try_Specific(default: Error_Exit(__Error_Code)) __Auto
 //#define __Try_Except __Try_Specific((void)0)
 //#define __Try_Abort __Try_Specific(default: Error_Abort())
 
@@ -1169,9 +1169,9 @@ __Inline C_FORMAT_VALUE C_format_value_i(int a)
 { C_FORMAT_VALUE r = {(uquad_t)a, C_Format_Int_Value}; return r; }
 __Inline C_FORMAT_VALUE C_format_value_q(quad_t a)        
 { C_FORMAT_VALUE r = {(uquad_t)a, C_Format_Quad_Value}; return r; }
-__Inline C_FORMAT_VALUE C_format_value_S(char *const a)   
+__Inline C_FORMAT_VALUE C_format_value_S(const char *a)   
 { C_FORMAT_VALUE r = {__Ptr_Word(a), C_Format_Cstr_Value}; return r; }
-__Inline C_FORMAT_VALUE C_format_value_p(wchar_t *const a)
+__Inline C_FORMAT_VALUE C_format_value_p(const wchar_t *a)
 { C_FORMAT_VALUE r = {__Ptr_Word(a), C_Format_Ptr_Value}; return r; }
 __Inline C_FORMAT_VALUE C_format_value_f(double a)
 { C_FORMAT_VALUE r = {0, C_Format_Float_Value}; r.f = a; return r; }

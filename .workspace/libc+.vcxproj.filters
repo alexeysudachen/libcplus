@@ -29,6 +29,12 @@
     <Filter Include="C+\csup">
       <UniqueIdentifier>{a99fc38c-5ff2-4f36-b6ca-c5122da62019}</UniqueIdentifier>
     </Filter>
+    <Filter Include="C+\db">
+      <UniqueIdentifier>{ee27d84e-a54f-4222-a361-24970d793281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\db">
+      <UniqueIdentifier>{964b396d-4b52-4a01-92be-d1076043470e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\c+\array.hc">
@@ -172,6 +178,24 @@
     <None Include="..\tests\crypto\makefile">
       <Filter>Tests\crypto</Filter>
     </None>
+    <None Include="..\c+\db\mysql.hc">
+      <Filter>C+\db</Filter>
+    </None>
+    <None Include="..\c+\db\xddb.hc">
+      <Filter>C+\db</Filter>
+    </None>
+    <None Include="..\c+\db\xddbmsql.hc">
+      <Filter>C+\db</Filter>
+    </None>
+    <None Include="..\c+\db\xddbsql_.hc">
+      <Filter>C+\db</Filter>
+    </None>
+    <None Include="..\c+\db\xddbsql3.hc">
+      <Filter>C+\db</Filter>
+    </None>
+    <None Include="..\tests\db\makefile">
+      <Filter>Tests\db</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\basic\array.c">
@@ -245,6 +269,9 @@
     </ClCompile>
     <ClCompile Include="..\tests\crypto\sha2.c">
       <Filter>Tests\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\db\xddb.c">
+      <Filter>Tests\db</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -96,4 +96,6 @@ switch ( setjmp(C_Push_JmpBuf()->b) ) while (1) \
 #define Test_Int_Equal(I1,I2) __Test_Assert( ((I1) == (I2)), __Test_STR((I1) == (I2)), $4(I1), $4(I2) )
 #define Test_Mem_Equal(S1,S2,L) __Test_Assert( (memcmp((S1),(S2),L) == 0), __Test_STR((memcmp((S1),(S2),L) == 0)), $B(S1,L), $B(S2,L) ) 
 
+#define Test_Info(S) 
+
 #endif /* C_once_BD92B6D2_8BD6_43FB_A8FE_4CD6143CF68D */

@@ -26,9 +26,9 @@ http://www.gnu.org/licenses/
 #define _C_BIGINT_BUILTIN
 #endif
 
-#include "c+/string.hc"
-#include "c+/buffer.hc"
-#include "c+/random.hc"
+#include "../string.hc"
+#include "../buffer.hc"
+#include "random.hc"
 
 typedef struct _C_BIGINT
 {
