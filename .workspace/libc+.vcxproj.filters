@@ -196,6 +196,9 @@
     <None Include="..\tests\db\makefile">
       <Filter>Tests\db</Filter>
     </None>
+    <None Include="..\c+\oj.hc">
+      <Filter>C+</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\basic\array.c">

@@ -15,24 +15,35 @@ is included by C+.hc
 
 void *C_Find_Method_Of(void *self /* VOID**  */, char *name, unsigned flags);
 
-_C_CORE_EXTERN char Oj_Destruct_OjMID[] _C_CORE_BUILTIN_CODE ( = "~/@" );
-_C_CORE_EXTERN char Oj_Destruct_Element_OjMID[] _C_CORE_BUILTIN_CODE ( = "~1/@" );
-_C_CORE_EXTERN char Oj_Compare_Elements_OjMID[] _C_CORE_BUILTIN_CODE ( = "?2/**" );
-_C_CORE_EXTERN char Oj_Compare_Keys_OjMID[] _C_CORE_BUILTIN_CODE ( = "?3/**" );
-_C_CORE_EXTERN char Oj_Clone_OjMID[] _C_CORE_BUILTIN_CODE ( = "$=/@" );
-_C_CORE_EXTERN char Oj_Count_OjMID[] _C_CORE_BUILTIN_CODE ( = "$#/@" );
-_C_CORE_EXTERN char Oj_Set_Key_OjMID[] _C_CORE_BUILTIN_CODE ( = ">+S>/@*" );
-_C_CORE_EXTERN char Oj_Find_Key_OjMID[] _C_CORE_BUILTIN_CODE ( = ">?S>/@*" );
-_C_CORE_EXTERN char Oj_Take_Key_OjMID[] _C_CORE_BUILTIN_CODE ( = ">-S>/@*" );
-_C_CORE_EXTERN char Oj_Del_Key_OjMID[] _C_CORE_BUILTIN_CODE ( = ">~S>/@*" );
-_C_CORE_EXTERN char Oj_Set_Lkey_OjMID[] _C_CORE_BUILTIN_CODE ( = ">+L>/@L" );
-_C_CORE_EXTERN char Oj_Find_Lkey_OjMID[] _C_CORE_BUILTIN_CODE ( = ">?L>/@L" );
-_C_CORE_EXTERN char Oj_Take_Lkey_OjMID[] _C_CORE_BUILTIN_CODE ( = ">-L>/@L" );
-_C_CORE_EXTERN char Oj_Del_Lkey_OjMID[] _C_CORE_BUILTIN_CODE ( = ">~L>/@L" );
+enum {
+	OJ_DEFAULT_GROUP = 0,
+	Oj_Destruct_OjMID,
+	Oj_Destruct_Element_OjMID,
+	Oj_Compare_Elements_OjMID,
+	Oj_Compare_Keys_OjMID,
+	Oj_Clone_OjMID,
+	Oj_Count_OjMID,
+
+	Oj_Put_OjMID,
+	Oj_Get_OjMID,
+	Oj_Has_OjMID,
+	Oj_Del_OjMID,
+	Oj_Take_OjMID,
+
+	Oj_Sort_OjMID,
+	Oj_Push_OjMID,
+	Oj_Pop_OjMID,
+	Oj_Sorted_Insert_OjMID,
+	Oj_Sorted_Find_OjMID,
+	Oj_Push_Front_OjMID,
+	Oj_Pop_Front_OjMID,
+	Oj_Erase_OjMID,
+	Oj_Remove_OjMID,
+};
 
 typedef struct _C_FUNCTABLE
 {
-	char *name;
+	int  ojmid;
 	void *func;
 } C_FUNCTABLE;
 
@@ -87,7 +98,7 @@ void *__Unrefe(void *p)
 ;
 
 #ifdef _C_CORE_BUILTIN
-uint_t __Typeid_Counter = 0;
+uint_t __Typeid_Counter = 0x0ffff;
 #endif
 
 #ifdef _C_CORE_BUILTIN
@@ -313,10 +324,10 @@ void *__Object(int size,C_FUNCTABLE *tbl)
 			int count;
 			for ( count = 0; tbl[count+1].name; ) { ++count; }
 			dynco->contsig = (C_DYNCO_ATS<<8)|count;
-			dynco->typeid = __Atomic_Increment(&__Typeid_Counter);
+			if ( !dynco->typeid )
+				dynco->typeid = __Atomic_Increment(&__Typeid_Counter);
 		}
 	}
-
 	return __Pool_Ptr(o+1,__Unrefe);
 }
 #endif
@@ -354,22 +365,37 @@ void __Object_Destruct(void *ptr)
 #endif
 ;
 
-void *C_Find_Method_In_Table(char *name, C_FUNCTABLE *tbl, int count, int flags)
+C_OBJECT *Oj_Object(void *ptr)
+{
+	if ( !C_SIGNAT_IS_OK(o) )
+		return 0;
+	return C_BASE(o);
+}
+
+C_OBJECT *Oj_Object_Or_Die(void *ptr)
+{
+	if ( !C_SIGNAT_IS_OK(o) )
+		__Raise_Format(C_ERROR_ISNT_OBJECT,"pointer is not refer to object");
+	return C_BASE(o);
+}
+
+void *C_Find_Method_In_Table(int ojmid, C_FUNCTABLE *tbl, int count, int flags)
 #ifdef _C_CORE_BUILTIN
 {
 	int i;
 	for ( i = 0; i < count; ++i )
-		if ( strcmp(tbl[i].name,name) == 0 )
+		if ( tbl[i].ojmid == ojmid == 0 )
 			return tbl[i].func;
 	return 0;
 }
 #endif
 ;
 
-void *C_Find_Method_Of(void *self /* VOID**  */, char *name, unsigned flags)
+void *C_Find_Method_Of(void *self /* VOID**  */, int ojmid, unsigned flags)
 #ifdef _C_CORE_BUILTIN
 {
 	void *o = *(void**)self;
+	
 	if ( o && STRICT_CHECK(C_SIGNAT_IS_OK(o)) )
 	{
 		C_DYNAMIC *dynco = C_BASE(o)->dynamic;
@@ -377,25 +403,22 @@ void *C_Find_Method_Of(void *self /* VOID**  */, char *name, unsigned flags)
 		{
 			if ( 1 && STRICT_CHECK((dynco->contsig>>8) == C_DYNCO_ATS || (dynco->contsig>>8) == C_DYNCO_NYD) )
 			{
-				void *f = C_Find_Method_In_Table(name,dynco->funcs,(dynco->contsig&0x0ff),flags);
-				if ( !f && (flags & C_RAISE_ERROR) )
-					C_Raise(C_ERROR_METHOD_NOT_FOUND,name,__C_FILE__,__LINE__);
-				return f;
+				void *f = C_Find_Method_In_Table(ojmid,dynco->funcs,(dynco->contsig&0x0ff),flags);
+				if ( f ) return f;
 			}
 			else
-				C_Fatal(C_ERROR_DYNCO_CORRUPTED,o,__C_FILE__,__LINE__);
+				__Raise(C_ERROR_DYNCO_CORRUPTED);
 		}
-		else if (flags & C_RAISE_ERROR)
-			C_Raise(C_ERROR_METHOD_NOT_FOUND,name,__C_FILE__,__LINE__);
 	}
-	else if (flags & C_RAISE_ERROR)
-		C_Raise(C_ERROR_METHOD_NOT_FOUND,name,__C_FILE__,__LINE__);
+
+	if (flags & C_RAISE_ERROR)
+		__Raise_Format(C_ERROR_METHOD_NOT_FOUND,("method with ojmid %d not found",ojmid));
 	return 0;
 }
 #endif
 ;
 
-uptrword_t C_Find_Constant_Of(void *o, char *name, unsigned flags, uptrword_t dflt)
+uptrword_t C_Find_Constant_Of(void *o, int ojmid, unsigned flags, uptrword_t dflt)
 #ifdef _C_CORE_BUILTIN
 {
 	if ( o && STRICT_CHECK(C_SIGNAT_IS_OK(o)) )
@@ -405,19 +428,18 @@ uptrword_t C_Find_Constant_Of(void *o, char *name, unsigned flags, uptrword_t df
 		{
 			if ( 1 && STRICT_CHECK((dynco->contsig>>8) == C_DYNCO_ATS || (dynco->contsig>>8) == C_DYNCO_NYD) )
 			{
-				void *f = C_Find_Method_In_Table(name,dynco->funcs,(dynco->contsig&0x0ff),flags);
-				if ( !f && (flags & C_RAISE_ERROR) )
-					C_Raise(C_ERROR_CONSTANT_NOT_FOUND,name,__C_FILE__,__LINE__);
-				return (uptrword_t)f;
+				void *f = C_Find_Method_In_Table(ojmid,dynco->funcs,(dynco->contsig&0x0ff),flags);
+				if ( f )
+					return (uptrword_t)f;
 			}
 			else
-				C_Fatal(C_ERROR_DYNCO_CORRUPTED,o,__C_FILE__,__LINE__);
+				__Raise(C_ERROR_DYNCO_CORRUPTED);
 		}
-		else if (flags & C_RAISE_ERROR)
-			C_Raise(C_ERROR_CONSTANT_NOT_FOUND,name,__C_FILE__,__LINE__);
 	}
-	else if (flags & C_RAISE_ERROR)
-		C_Raise(C_ERROR_CONSTANT_NOT_FOUND,name,__C_FILE__,__LINE__);
+
+	if (flags & C_RAISE_ERROR)
+		__Raise_Format(C_ERROR_METHOD_NOT_FOUND,("method with ojmid %d not found",ojmid));
+
 	return dflt;
 }
 #endif

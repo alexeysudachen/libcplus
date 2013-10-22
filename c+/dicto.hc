@@ -25,6 +25,8 @@ http://www.gnu.org/licenses/
 #define _C_DICTO_BUILTIN
 #endif
 
+enum { C_REF_DICTO_TYPEID = 0xaa3d };
+
 #include "C+.hc"
 #include "crc.hc"
 #include "buffer.hc"
@@ -322,7 +324,7 @@ void *Dicto_Refs(void)
 #ifdef _C_DICTO_BUILTIN  
   {
     static C_FUNCTABLE funcs[] = 
-      { {0},
+      { {0, C_REF_DICTO_TYPEID },
         {Oj_Destruct_OjMID, Dicto_Destruct},
         {Oj_Destruct_Element_OjMID, __Unrefe},
         {0}};

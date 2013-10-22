@@ -76,6 +76,7 @@
     <None Include="..\c+\dicto.hc" />
     <None Include="..\c+\file.hc" />
     <None Include="..\c+\minilog.hc" />
+    <None Include="..\c+\oj.hc" />
     <None Include="..\c+\program.hc" />
     <None Include="..\c+\sar.hc" />
     <None Include="..\c+\slist.hc" />

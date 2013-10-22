@@ -28,6 +28,8 @@ http://www.gnu.org/licenses/
 
 #include "C+.hc"
 
+enum { C_REF_ARRAY_TYPEID = 0xa463 };
+
 #ifdef _C_ARRAY_BUILTIN
 # define _C_ARRAY_BUILTIN_CODE(Code) Code
 # define _C_ARRAY_EXTERN 
@@ -35,97 +37,6 @@ http://www.gnu.org/licenses/
 # define _C_ARRAY_BUILTIN_CODE(Code)
 # define _C_ARRAY_EXTERN extern 
 #endif
-
-_C_ARRAY_EXTERN char Oj_Sort_OjMID[] _C_ARRAY_BUILTIN_CODE ( = ">>>/@" );
-_C_ARRAY_EXTERN char Oj_Push_OjMID[] _C_ARRAY_BUILTIN_CODE ( = "$+/@*" );
-_C_ARRAY_EXTERN char Oj_Pop_OjMID[] _C_ARRAY_BUILTIN_CODE ( = "$-/@" );
-_C_ARRAY_EXTERN char Oj_Pop_Npl_OjMID[] _C_ARRAY_BUILTIN_CODE ( = "`$-/@" );
-_C_ARRAY_EXTERN char Oj_Sorted_Insert_OjMID[] _C_ARRAY_BUILTIN_CODE ( = ">1>/@*" );
-_C_ARRAY_EXTERN char Oj_Sorted_Find_OjMID[] _C_ARRAY_BUILTIN_CODE ( = ">?>/@*" );
-_C_ARRAY_EXTERN char Oj_Push_Front_OjMID[] _C_ARRAY_BUILTIN_CODE ( = "+$/@*" );
-_C_ARRAY_EXTERN char Oj_Pop_Front_OjMID[] _C_ARRAY_BUILTIN_CODE ( = "-$/@" );
-_C_ARRAY_EXTERN char Oj_Pop_Front_Npl_OjMID[] _C_ARRAY_BUILTIN_CODE ( = "`-$/@" );
-
-void Oj_Sort(void *self)
-#ifdef _C_ARRAY_BUILTIN
-{
-	void (*sort)(void *) = C_Find_Method_Of(&self,Oj_Sort_OjMID,C_RAISE_ERROR);
-	sort(self);
-}
-#endif
-;
-
-void Oj_Sorted_Insert(void *self, void *val)
-#ifdef _C_ARRAY_BUILTIN
-{
-	void (*insert)(void *, void *) = C_Find_Method_Of(&self,Oj_Sorted_Insert_OjMID,C_RAISE_ERROR);
-	insert(self,val);
-}
-#endif
-;
-
-void *Oj_Sorted_Find(void *self, void *val)
-#ifdef _C_ARRAY_BUILTIN
-{
-	void *(*find)(void *, void *) = C_Find_Method_Of(&self,Oj_Sorted_Find_OjMID,C_RAISE_ERROR);
-	return find(self,val);
-}
-#endif
-;
-
-void Oj_Push(void *self, void *val)
-#ifdef _C_ARRAY_BUILTIN
-{
-	void (*push)(void *, void *) = C_Find_Method_Of(&self,Oj_Push_OjMID,C_RAISE_ERROR);
-	push(self,val);
-}
-#endif
-;
-
-void *Oj_Pop(void *self)
-#ifdef _C_ARRAY_BUILTIN
-{
-	void *(*pop)(void *) = C_Find_Method_Of(&self,Oj_Pop_OjMID,C_RAISE_ERROR);
-	return pop(self);
-}
-#endif
-;
-
-void *Oj_Pop_Npl(void *self)
-#ifdef _C_ARRAY_BUILTIN
-{
-	void *(*pop)(void *) = C_Find_Method_Of(&self,Oj_Pop_Npl_OjMID,C_RAISE_ERROR);
-	return pop(self);
-}
-#endif
-;
-
-void Oj_Push_Front(void *self, void *val)
-#ifdef _C_ARRAY_BUILTIN
-{
-	void (*push)(void *, void *) = C_Find_Method_Of(&self,Oj_Push_Front_OjMID,C_RAISE_ERROR);
-	push(self,val);
-}
-#endif
-;
-
-void *Oj_Pop_Front_Npl(void *self)
-#ifdef _C_ARRAY_BUILTIN
-{
-	void *(*pop)(void *) = C_Find_Method_Of(&self,Oj_Pop_Front_Npl_OjMID,C_RAISE_ERROR);
-	return pop(self);
-}
-#endif
-;
-
-void *Oj_Pop_Front(void *self)
-#ifdef _C_ARRAY_BUILTIN
-{
-	void *(*pop)(void *) = C_Find_Method_Of(&self,Oj_Pop_Front_OjMID,C_RAISE_ERROR);
-	return pop(self);
-}
-#endif
-;
 
 void *Lower_Boundary(void **S, int S_len, void *compare, void *val, int *found)
 #ifdef _C_ARRAY_BUILTIN
@@ -604,14 +515,7 @@ void *Array_Void(void)
 	static C_FUNCTABLE funcs[] = 
 	{ {0},
 	{Oj_Destruct_OjMID,         Array_Destruct},
-	{Oj_Sort_OjMID,             Array_Sort},
-	{Oj_Sorted_Insert_OjMID,    Array_Sorted_Insert},
-	{Oj_Sorted_Find_OjMID,      Array_Binary_Find},
-	{Oj_Push_OjMID,             Array_Push_Oj},
-	{Oj_Push_Front_OjMID,       Array_Push_Front_Oj},
 	{Oj_Count_OjMID,            Array_Count},
-	{Oj_Pop_Npl_OjMID,          Array_Pop_Npl_Oj},
-	{Oj_Pop_Front_Npl_OjMID,    Array_Pop_Front_Npl_Oj},
 	{0}};
 	C_ARRAY *arr = __Object(sizeof(C_ARRAY),funcs);
 	return arr;
@@ -623,19 +527,10 @@ void *Array_Refs(void)
 #ifdef _C_ARRAY_BUILTIN
 {
 	static C_FUNCTABLE funcs[] = 
-	{ {0},
+	{ {0,C_REF_ARRAY_TYPEID},
 	{Oj_Destruct_OjMID,         Array_Destruct},
 	{Oj_Destruct_Element_OjMID, __Unrefe},
-	{Oj_Sort_OjMID,             Array_Sort},
-	{Oj_Sorted_Insert_OjMID,    Array_Sorted_Insert},
-	{Oj_Sorted_Find_OjMID,      Array_Binary_Find},
-	{Oj_Push_OjMID,             Array_Push_Oj},
-	{Oj_Pop_OjMID,              Array_Pop_Oj},
-	{Oj_Push_Front_OjMID,       Array_Push_Front_Oj},
-	{Oj_Pop_Front_OjMID,        Array_Pop_Front_Oj},
 	{Oj_Count_OjMID,            Array_Count},
-	{Oj_Pop_Npl_OjMID,          Array_Pop_Npl_Oj},
-	{Oj_Pop_Front_Npl_OjMID,    Array_Pop_Front_Npl_Oj},
 	{0}};
 	C_ARRAY *arr = __Object(sizeof(C_ARRAY),funcs);
 	return arr;
@@ -663,16 +558,7 @@ void *Array_Ptrs(void)
 	{ {0},
 	{Oj_Destruct_OjMID,         Array_Destruct},
 	{Oj_Destruct_Element_OjMID, free},
-	{Oj_Sort_OjMID,             Array_Sort},
-	{Oj_Sorted_Insert_OjMID,    Array_Sorted_Insert},
-	{Oj_Sorted_Find_OjMID,      Array_Binary_Find},
-	{Oj_Push_OjMID,             Array_Push_Oj},
-	{Oj_Pop_OjMID,              Array_Pop_Oj},
-	{Oj_Push_Front_OjMID,       Array_Push_Front_Oj},
-	{Oj_Pop_Front_OjMID,        Array_Pop_Front_Oj},
 	{Oj_Count_OjMID,            Array_Count},
-	{Oj_Pop_Npl_OjMID,          Array_Pop_Npl_Oj},
-	{Oj_Pop_Front_Npl_OjMID,    Array_Pop_Front_Npl_Oj},
 	{0}};
 	C_ARRAY *arr = __Object(sizeof(C_ARRAY),funcs);
 	return arr;
@@ -688,16 +574,7 @@ void *Array_Pchars(void)
 	{Oj_Destruct_OjMID,         Array_Destruct},
 	{Oj_Destruct_Element_OjMID, free},
 	{Oj_Compare_Elements_OjMID, strcmp},
-	{Oj_Sort_OjMID,             Array_Sort},
-	{Oj_Sorted_Insert_OjMID,    Array_Sorted_Insert},
-	{Oj_Sorted_Find_OjMID,      Array_Binary_Find},
-	{Oj_Push_OjMID,             Array_Push_Oj},
-	{Oj_Pop_OjMID,              Array_Pop_Oj},
-	{Oj_Push_Front_OjMID,       Array_Push_Front_Oj},
-	{Oj_Pop_Front_OjMID,        Array_Pop_Front_Oj},
 	{Oj_Count_OjMID,            Array_Count},
-	{Oj_Pop_Npl_OjMID,          Array_Pop_Npl_Oj},
-	{Oj_Pop_Front_Npl_OjMID,    Array_Pop_Front_Npl_Oj},
 	{0}};
 	C_ARRAY *arr = __Object(sizeof(C_ARRAY),funcs);
 	return arr;
@@ -713,20 +590,12 @@ void *Array_Pwide(void)
 #ifdef _C_ARRAY_BUILTIN
 {
 	static C_FUNCTABLE funcs[] = 
-	{ {0},
+	{ {0,0},
 	{Oj_Destruct_OjMID,         Array_Destruct},
 	{Oj_Destruct_Element_OjMID, free},
 	{Oj_Compare_Elements_OjMID, __wcscmp},
 	{Oj_Sort_OjMID,             Array_Sort},
-	{Oj_Sorted_Insert_OjMID,    Array_Sorted_Insert},
-	{Oj_Sorted_Find_OjMID,      Array_Binary_Find},
-	{Oj_Push_OjMID,             Array_Push_Oj},
-	{Oj_Pop_OjMID,              Array_Pop_Oj},
-	{Oj_Push_Front_OjMID,       Array_Push_Front_Oj},
-	{Oj_Pop_Front_OjMID,        Array_Pop_Front_Oj},
 	{Oj_Count_OjMID,            Array_Count},
-	{Oj_Pop_Npl_OjMID,          Array_Pop_Npl_Oj},
-	{Oj_Pop_Front_Npl_OjMID,    Array_Pop_Front_Npl_Oj},
 	{0}};
 	C_ARRAY *arr = __Object(sizeof(C_ARRAY),funcs);
 	return arr;
