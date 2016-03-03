@@ -1,20 +1,9 @@
 
 /*
 
-Copyright © 2010-2012, Alexéy Sudachén, alexey@sudachen.name
-DesaNova Ltda, http://desanova.com/libcplus, Viña del Mar, Chile.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-http://www.gnu.org/licenses/
+Copyright © 2010-2016, Alexéy Sudachén, alexey@sudachen.name
+http://libcplus.keepmywork.com/
+See license rules in C+.hc
 
 */
 
@@ -36,21 +25,27 @@ http://www.gnu.org/licenses/
 # define _C_CRC_EXTERN extern 
 #endif
 
-_C_CRC_EXTERN char Oj_Digest_Size_OjCID[] _C_CRC_BUILTIN_CODE( = "#digest-size/i"); 
+enum
+{
+    Oj_CRC_GROUP = 200,
+    Oj_Digest_Size_OjCID,
+    Oj_Digest_Update_OjMID,
+    Oj_Digest_Start_OjMID,
+    Oj_Digest_Finish_OjMID,
+    Oj_CRC_GROUP_END,
+};
+
 int Oj_Digest_Size(void *hash) _C_CRC_BUILTIN_CODE(
   { return C_Find_Constant_Of(hash,Oj_Digest_Size_OjCID,C_RAISE_ERROR,0); });
   
-_C_CRC_EXTERN char Oj_Digest_Update_OjMID[] _C_CRC_BUILTIN_CODE( = "digest-update/@*i"); 
 void Oj_Digest_Update(void *hash,void *buf,int L) _C_CRC_BUILTIN_CODE(
   { ((void(*)(void*,void*,int))C_Find_Method_Of(&hash,Oj_Digest_Update_OjMID,C_RAISE_ERROR))
         (hash,buf,L); });
 
-_C_CRC_EXTERN char Oj_Digest_Start_OjMID[] _C_CRC_BUILTIN_CODE( = "digest-start/@"); 
 void Oj_Digest_Start(void *hash) _C_CRC_BUILTIN_CODE(
   { ((void(*)(void*))C_Find_Method_Of(&hash,Oj_Digest_Start_OjMID,C_RAISE_ERROR))
         (hash); });
 
-_C_CRC_EXTERN char Oj_Digest_Finish_OjMID[] _C_CRC_BUILTIN_CODE( = "digest-finish/@*"); 
 void *Oj_Digest_Finish(void *hash, void *out) _C_CRC_BUILTIN_CODE(
   { return ((void*(*)(void*,void*))C_Find_Method_Of(&hash,Oj_Digest_Finish_OjMID,C_RAISE_ERROR))
         (hash,out); });

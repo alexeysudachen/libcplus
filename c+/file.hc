@@ -1,20 +1,9 @@
 
 /*
 
-Copyright © 2010-2012, Alexéy Sudachén, alexey@sudachen.name
-DesaNova Ltda, http://desanova.com/libcplus, Viña del Mar, Chile.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-http://www.gnu.org/licenses/
+Copyright © 2010-2016, Alexéy Sudachén, alexey@sudachen.name
+http://libcplus.keepmywork.com/
+See license rules in C+.hc
 
 */
 
@@ -60,6 +49,26 @@ enum { C_FILE_COPY_BUFFER_SIZE = 4096, };
 # define _C_FILE_BUILTIN_CODE(Code)
 # define _C_FILE_EXTERN extern
 #endif
+
+enum
+{
+    Oj_FILE_GROUP   = 100,
+    Oj_Close_OjMID,
+    Oj_Read_OjMID,
+    Oj_Write_OjMID,
+    Oj_Available_OjMID,
+    Oj_Eof_OjMID,
+    Oj_Length_OjMID,
+    Oj_Seek_OjMID,
+    Oj_Tell_OjMID,
+    Oj_Flush_OjMID,
+    Oj_Read_Line_OjMID,
+    Oj_Truncate_OjMID,
+    Oj_Write_Line_OjMID,
+    Oj_Read_All_OjMID,
+    Oj_Rewind_OjMID,
+    Oj_FILE_GROUP_END
+};
 
 #ifdef __windoze
 enum { C_PATH_SEPARATOR = '\\' };
@@ -698,7 +707,6 @@ int Raise_If_Cfile_Is_Not_Opened(C_FILE *f)
 #endif
 ;
 
-_C_FILE_EXTERN char Oj_Close_OjMID[] _C_FILE_BUILTIN_CODE( = "close/@"); 
 int Oj_Close(void *f) _C_FILE_BUILTIN_CODE(
 { 
 	return ((int(*)(void*))C_Find_Method_Of(&f,Oj_Close_OjMID,C_RAISE_ERROR))
@@ -736,7 +744,6 @@ int Pfile_Close(C_FILE *f)
 #endif
 ;
 
-_C_FILE_EXTERN char Oj_Flush_OjMID[] _C_FILE_BUILTIN_CODE( = "flush/@"); 
 void Oj_Flush(void *f) _C_FILE_BUILTIN_CODE(
 { 
 	((void(*)(void*))C_Find_Method_Of(&f,Oj_Flush_OjMID,C_RAISE_ERROR))
@@ -801,7 +808,6 @@ C_FILE_STATS *Cfile_Stats(C_FILE *f,C_FILE_STATS *st)
 #endif
 ;
 
-_C_FILE_EXTERN char Oj_Eof_OjMID[] _C_FILE_BUILTIN_CODE( = "eof/@"); 
 int Oj_Eof(void *f) _C_FILE_BUILTIN_CODE(
 { 
 	return 
@@ -822,7 +828,7 @@ int Cfile_Eof(C_FILE *f)
 ;
 
 #define Oj_Read_Full(File,Buf,Count) Oj_Read(File,Buf,Count,-1)
-_C_FILE_EXTERN char Oj_Read_OjMID[] _C_FILE_BUILTIN_CODE( = "read/@*ii"); 
+
 int Oj_Read(void *f,void *buf,int count,int min_count) _C_FILE_BUILTIN_CODE(
 { 
 	return 
@@ -864,7 +870,6 @@ int Cfile_Read(C_FILE *f, void *buf, int count, int min_count)
 #endif
 ;
 
-_C_FILE_EXTERN char Oj_Read_Line_OjMID[] _C_FILE_BUILTIN_CODE( = "readline/@"); 
 char *Oj_Read_Line(void *f) _C_FILE_BUILTIN_CODE(
 { 
 	return 
@@ -912,7 +917,7 @@ char *Cfile_Read_Line(C_FILE *f)
 ;
 
 #define Oj_Write_Full(File,Buf,Count) Oj_Write(File,Buf,Count,-1)
-_C_FILE_EXTERN char Oj_Write_OjMID[] _C_FILE_BUILTIN_CODE( = "write/@*ii"); 
+
 int Oj_Write(void *f,void *buf,int count,int min_count) _C_FILE_BUILTIN_CODE(
 { 
 	return 
@@ -944,7 +949,6 @@ int Cfile_Write(C_FILE *f, void *buf, int count, int min_count)
 #endif
 ;
 
-_C_FILE_EXTERN char Oj_Write_Line_OjMID[] _C_FILE_BUILTIN_CODE( = "writeline/@*"); 
 void Oj_Write_Line(void *f,char *text) _C_FILE_BUILTIN_CODE(
 { 
 	((void(*)(void*,void*))C_Find_Method_Of(&f,Oj_Write_Line_OjMID,C_RAISE_ERROR))
@@ -966,7 +970,6 @@ void Cfile_Write_Line(C_FILE *f, char *text)
 #endif
 ;
 
-_C_FILE_EXTERN char Oj_Tell_OjMID[] _C_FILE_BUILTIN_CODE( = "tell/@"); 
 quad_t Oj_Tell(void *f) _C_FILE_BUILTIN_CODE(
 { 
 	return 
@@ -998,7 +1001,6 @@ quad_t Cfile_Tell(C_FILE *f)
 #endif
 ;
 
-_C_FILE_EXTERN char Oj_Length_OjMID[] _C_FILE_BUILTIN_CODE( = "length/@"); 
 quad_t Oj_Length(void *f) _C_FILE_BUILTIN_CODE(
 { return 
 ((quad_t(*)(void*))C_Find_Method_Of(&f,Oj_Length_OjMID,C_RAISE_ERROR))
@@ -1017,7 +1019,6 @@ quad_t Cfile_Length(C_FILE *f)
 #endif
 ;
 
-_C_FILE_EXTERN char Oj_Available_OjMID[] _C_FILE_BUILTIN_CODE( = "available/@"); 
 quad_t Oj_Available(void *f) _C_FILE_BUILTIN_CODE(
 { 
 	return 
@@ -1038,7 +1039,6 @@ quad_t Cfile_Available(C_FILE *f)
 #endif
 ;
 
-_C_FILE_EXTERN char Oj_Read_All_OjMID[] _C_FILE_BUILTIN_CODE( = "readall/@"); 
 C_BUFFER *Oj_Read_All(void *f)
 #ifdef _C_FILE_BUILTIN
 {
@@ -1101,13 +1101,11 @@ C_BUFFER *Cfile_Read_All(C_FILE *f)
 #endif
 ;
 
-_C_FILE_EXTERN char Oj_Seek_OjMID[] _C_FILE_BUILTIN_CODE( = "seek/@qi"); 
 quad_t Oj_Seek(void *f, quad_t pos, int whence) _C_FILE_BUILTIN_CODE(
 { return 
 ((quad_t (*)(void*,quad_t,int))C_Find_Method_Of(&f,Oj_Seek_OjMID,C_RAISE_ERROR))
 (f,pos,whence); });
 
-_C_FILE_EXTERN char Oj_Rewind_OjMID[] _C_FILE_BUILTIN_CODE( = "rewind/@"); 
 void Oj_Rewind(void *f) _C_FILE_BUILTIN_CODE(
 { 
 	quad_t (*f_seek)(void*,quad_t,int) = C_Find_Method_Of(&f,Oj_Seek_OjMID,0);
@@ -1145,7 +1143,6 @@ quad_t Cfile_Seek(C_FILE *f, quad_t pos, int whence)
 #endif
 ;
 
-_C_FILE_EXTERN char Oj_Truncate_OjMID[] _C_FILE_BUILTIN_CODE( = "truncate/@q"); 
 quad_t Oj_Truncate(void *f, quad_t length) _C_FILE_BUILTIN_CODE(
 { 
 	return ((quad_t (*)(void*,quad_t))

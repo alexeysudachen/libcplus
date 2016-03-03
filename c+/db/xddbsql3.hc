@@ -1,19 +1,8 @@
 /*
 
-Copyright © 2010-2012, Alexéy Sudachén, alexey@sudachen.name
-DesaNova Ltda, http://desanova.com/libcplus, Viña del Mar, Chile.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-http://www.gnu.org/licenses/
+Copyright © 2010-2016, Alexéy Sudachén, alexey@sudachen.name
+http://libcplus.keepmywork.com/
+See license rules in C+.hc
 
 */
 
@@ -256,7 +245,7 @@ void XddbSql3_Quote_Append(C_BUFFER *bf, void *S, int len)
 			if ( !*p )             Buffer_Append(bf,"^0",2);
 			else if ( *p == '\n' ) Buffer_Append(bf,"^n",2);
 			else if ( *p == '\r' ) Buffer_Append(bf,"^r",2);
-			else if ( *p == '^' ) Buffer_Append(bf,"^^",2);
+            else if ( *p == '^' )  Buffer_Append(bf,"^^",2);
 			else if ( *p == '\'' ) Buffer_Append(bf,"\'\'",2);
 			else PANICA("");
 			++p;

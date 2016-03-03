@@ -1,7 +1,6 @@
 
 #include "../../c+/buffer.hc"
 #include "../../c+/program.hc"
-#include "../../c+/tesuite.hc"
 
 int object_counter = 0;
 

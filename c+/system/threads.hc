@@ -1,20 +1,9 @@
 
 /*
 
-Copyright © 2010-2012, Alexéy Sudachén, alexey@sudachen.name
-DesaNova Ltda, http://desanova.com/libcplus, Viña del Mar, Chile.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-http://www.gnu.org/licenses/
+Copyright © 2010-2016, Alexéy Sudachén, alexey@sudachen.name
+http://libcplus.keepmywork.com/
+See license rules in C+.hc
 
 */
 
@@ -22,6 +11,10 @@ http://www.gnu.org/licenses/
 #define C_once_7BF4D1A1_7ED4_4CFB_AA04_0E72090D6614
 
 #include "../C+.hc"
+
+#ifndef _THREADS
+#error threads are disabled, to enable use -D_THREADS
+#endif
 
 #if defined __windoze && !defined _PTHREADS
 typedef HANDLE thread_t;

@@ -1,20 +1,20 @@
 
 /*
 
-Copyright © 2010-2012, Alexéy Sudachén, alexey@sudachen.name
-DesaNova Ltda, http://desanova.com/libcplus, Viña del Mar, Chile.
+Copyright © 2010-2016, Alexéy Sudachén, alexey@sudachen.name
+http://libcplus.keepmywork.com/
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+   http://www.apache.org/licenses/LICENSE-2.0
 
-http://www.gnu.org/licenses/
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 */
 
@@ -28,7 +28,7 @@ Don't foget to use -rdynamic to see symbols in backtrace!
 
 #ifndef C_once_6973F3BA_26FA_434D_9ED9_FF5389CE421C
 #define C_once_6973F3BA_26FA_434D_9ED9_FF5389CE421C
-#define C_CORE_VERSION 1000
+#define C_CORE_VERSION 1002
 
 #ifdef _BUILTIN
 #	define _C_CORE_BUILTIN
@@ -124,10 +124,6 @@ Don't foget to use -rdynamic to see symbols in backtrace!
 /* __BSD_VISIBLE defined by default! */
 #endif
 
-#ifdef _TREADS
-#	define _REENTRANT
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <setjmp.h>
@@ -161,6 +157,9 @@ Don't foget to use -rdynamic to see symbols in backtrace!
 #			define __i386
 #		elif defined _M_AMD64
 #			define __x86_64
+#           ifndef _AMD64_
+#               define _AMD64_
+#           endif
 #		else
 #			error "unknown processor"
 #		endif
@@ -463,7 +462,7 @@ __No_Return void _C_Raise(int err,char *msg,char *filename,int lineno);
 
 #if defined __GNUC__
 #	define __RwBarrier() __asm__ __volatile__ ("" ::: "memory")
-#	define Atomic_Increment(Ptr) __sync_sub_and_fetch((i32_t volatile *)Ptr,1)
+#	define Atomic_Increment(Ptr) __sync_add_and_fetch((i32_t volatile *)Ptr,1)
 #	define Atomic_Decrement(Ptr) __sync_sub_and_fetch((i32_t volatile *)Ptr,1)
 #	define Atomic_CmpXchg(Ptr,Val,Comp) __sync_bool_compare_and_swap((u32_t *volatile)Ptr,(u32_t)Comp,(u32_t)Val)
 #	define Atomic_CmpXchg_Ptr(Ptr,Val,Comp) __sync_bool_compare_and_swap((void *volatile*)Ptr,(void*)Comp,(void*)Val)

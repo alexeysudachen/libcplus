@@ -1,7 +1,8 @@
 
 /*
 
-Copyright © 2010-2011, Alexéy Sudachén, alexey@sudachen.name, Chile
+Copyright © 2010-2016, Alexéy Sudachén, alexey@sudachen.name
+http://libcplus.keepmywork.com/
 See license rules in C+.hc
 
 C extended

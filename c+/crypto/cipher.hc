@@ -1,20 +1,9 @@
 
 /*
 
-Copyright © 2010-2012, Alexéy Sudachén, alexey@sudachen.name
-DesaNova Ltda, http://desanova.com/libcplus, Viña del Mar, Chile.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-http://www.gnu.org/licenses/
+Copyright © 2010-2016, Alexéy Sudachén, alexey@sudachen.name
+http://libcplus.keepmywork.com/
+See license rules in C+.hc
 
 */
 
@@ -26,6 +15,8 @@ http://www.gnu.org/licenses/
 #endif
 
 #include "C+.hc"
+#include "../crc.hc"
+#include "random.hc"
 #include "md5.hc"
 #include "sha2.hc"
 #include "buffer.hc"
@@ -38,10 +29,15 @@ http://www.gnu.org/licenses/
 # define _C_CIPHER_EXTERN extern 
 #endif
 
-_C_CIPHER_EXTERN char Oj_Encrypt8_OjMID[] _C_CIPHER_BUILTIN_CODE ( = "encrypt8/@*" );
-_C_CIPHER_EXTERN char Oj_Decrypt8_OjMID[] _C_CIPHER_BUILTIN_CODE ( = "decrypt8/@*" );
-_C_CIPHER_EXTERN char Oj_Encrypt16_OjMID[] _C_CIPHER_BUILTIN_CODE ( = "encrypt16/@*" );
-_C_CIPHER_EXTERN char Oj_Decrypt16_OjMID[] _C_CIPHER_BUILTIN_CODE ( = "decrypt16/@*" );
+enum
+{
+    Oj_CIPHER_GROUP = Oj_RANDOM_GROUP_END,
+    Oj_Encrypt8_OjMID,
+    Oj_Decrypt8_OjMID,
+    Oj_Encrypt16_OjMID,
+    Oj_Decrypt16_OjMID,
+    Oj_CIPHER_GROUP_END
+};
 
 void Oj_Encrypt8(void *cipher,void *block8) _C_CIPHER_BUILTIN_CODE(
   { ((void(*)(void*,void*))C_Find_Method_Of(cipher,Oj_Encrypt8_OjMID,C_RAISE_ERROR))

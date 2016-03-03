@@ -1,20 +1,9 @@
 
 /*
 
-Copyright © 2010-2012, Alexéy Sudachén, alexey@sudachen.name
-DesaNova Ltda, http://desanova.com/libcplus, Viña del Mar, Chile.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-http://www.gnu.org/licenses/
+Copyright © 2010-2016, Alexéy Sudachén, alexey@sudachen.name
+http://libcplus.keepmywork.com/
+See license rules in C+.hc
 
 */
 
@@ -41,12 +30,18 @@ static char *Prog_Nam_S = 0;
 enum _C_ROG_FLAGS
 {
 	PROG_CMDLINE_OPTS_FIRST = 1,
-	PROG_EXIT_ON_ERROR		= 2,
-	PROG_RAISE_ON_ERROR		= 4,
+    PROG_EXIT_ON_ERROR		= 2,
+    PROG_RAISE_ON_ERROR		= 4,
 	PROG_USAGE_ON_ERROR		= 8,
-	PROG_USAGE_ON_NOARGS	= 16,
+    PROG_USAGE_ON_NOARGS	= 16,
 	PROG_USAGE_ON_HELP		= 32,
-	PROG_USAGE_ON_ANY		= PROG_USAGE_ON_ERROR|PROG_USAGE_ON_NOARGS|PROG_USAGE_ON_HELP,
+    PROG_PRINT_ON_ERROR		= 64,
+    PROG_USAGE_ON_ANY		= PROG_USAGE_ON_ERROR|PROG_USAGE_ON_NOARGS|PROG_USAGE_ON_HELP,
+    PROG_EXIT_ON_HELP		= 128,
+    PROG_EXIT_ON_NOARGS		= 256,
+    PROG_EXIT_ON_ANY		= PROG_EXIT_ON_ERROR|PROG_EXIT_ON_HELP|PROG_EXIT_ON_NOARGS,
+
+    PROG_UTF8_COMMAND_LINE  = 512,
 };
 
 typedef enum _C_PROG_PARAM_FEATURES
@@ -161,21 +156,22 @@ void Prog_Parse_Command_Line(int argc, char **argv, char *patt, unsigned flags)
 					if ( argc > i+1 )
 					{
 #ifdef __windoze
-						Array_Push(L,Str_Locale_To_Utf8_Npl(argv[i+1])); 
-#else
-						Array_Push(L,Str_Copy_Npl(argv[i+1],-1)); 
+                        if ( !(flags & PROG_UTF8_COMMAND_LINE) )
+                            Array_Push(L,Str_Locale_To_Utf8_Npl(argv[i+1]));
+                        else
 #endif
+                            Array_Push(L,Str_Copy_Npl(argv[i+1],-1));
 						++i;
 					}
 					else
 						__Raise_Format(C_ERROR_ILLFORMED,
-						("comandline option -%s requires parameter"
+                        ("commandline option -%s requires parameter"
 						,(L->at)[0]));
 				}
 
 				if ( a->features == PROG_PARAM_HAS_NO_ARGUMENT && L->count > 1 )
 					__Raise_Format(C_ERROR_ILLFORMED,
-					("comandline option -%s does not have parameter"
+                    ("commandline option -%s does not have parameter"
 					,(L->at)[0]));
 				*a->present = 1;
 				if ( L->count > 1 )
@@ -183,7 +179,7 @@ void Prog_Parse_Command_Line(int argc, char **argv, char *patt, unsigned flags)
 			}
 			else
 				__Raise_Format(C_ERROR_ILLFORMED,
-				("unknown comandline option -%s",(L->at)[0]));
+                ("unknown commandline option -%s",(L->at)[0]));
 		}
 		else
 		{
@@ -215,7 +211,7 @@ void Prog_Clear_At_Exit(void)
 int Prog_Init(int argc, char **argv, char *patt, unsigned flags, ...)
 #ifdef _C_PROG_BUILTIN
 {
-	typedef int (*usage_f)(int);
+    typedef int (*usage_f)(int,...);
 	int rt = 0;
 	usage_f usage;
 	va_list va;
@@ -248,22 +244,34 @@ int Prog_Init(int argc, char **argv, char *patt, unsigned flags, ...)
 		if ( (flags & PROG_USAGE_ON_NOARGS) && !Prog_Arguments_Count() )
 		{
 			rt = usage(PROG_USAGE_ON_NOARGS);
+            if ( flags & PROG_EXIT_ON_NOARGS )
+              exit(rt);
 		}
-		else if ( (flags & PROG_USAGE_ON_HELP) && Prog_Has_Opt("help") )
+        else if ( (flags & PROG_USAGE_ON_HELP) && Prog_Has_Opt("help") )
 		{
 			rt = usage(PROG_USAGE_ON_HELP);
-		}
+            if ( flags & PROG_EXIT_ON_HELP )
+              exit(rt);
+        }
 	}
 	__Except
 	{
-		if ( flags & (PROG_EXIT_ON_ERROR|PROG_USAGE_ON_ERROR) )
+        if ( flags & PROG_PRINT_ON_ERROR )
+        {
 			fprintf(stderr,"\n(!) %s\n\n",__Error_Message);
+        }
 
-		if ( flags & PROG_EXIT_ON_ERROR )
-			exit(-1);
-		else if ( flags & PROG_USAGE_ON_ERROR )
-			rt = usage(PROG_USAGE_ON_ERROR);
-		else
+        if ( flags & PROG_USAGE_ON_ERROR )
+        {
+            rt = usage(PROG_USAGE_ON_ERROR,__Error_Message);
+            if ( rt != 0 && (flags & PROG_EXIT_ON_ERROR) )
+              exit(rt);
+        }
+        else if ( flags & PROG_EXIT_ON_ERROR )
+        {
+              exit(-1);
+        }
+        else
 		{
 			if ( !Prog_Data_Opts )
 				Prog_Data_Opts = __Refe(Dicto_Refs());
@@ -371,6 +379,36 @@ int Prog_Init_Windoze(char *patt, unsigned flags)
 #endif
 ;
 #endif
+
+#ifdef __windoze
+int Prog_Init_Unicode(int argc, wchar_t **wargv, char *patt, unsigned flags, ...)
+#ifdef _C_PROG_BUILTIN
+{
+    int rt = 0, i;
+    typedef void (*usage_f)();
+    usage_f usage;
+
+    va_list va;
+    va_start(va,flags);
+    usage = va_arg(va,usage_f);
+    va_end(va);
+
+    __Auto_Release
+    {
+        C_ARRAY *argv = Array_Pchars();
+        for ( i = 0; i < argc; ++i )
+        {
+            Array_Push(argv,Str_Unicode_To_Utf8_Npl(wargv[i]));
+        }
+        rt = Prog_Init(argc,(char**)argv->at,patt,flags|PROG_UTF8_COMMAND_LINE,usage);
+    }
+
+    return rt;
+}
+#endif
+;
+#endif
+
 
 int Prog_Arguments_Count()
 #ifdef _C_PROG_BUILTIN
@@ -492,6 +530,14 @@ char *Prog_Fullname()
 #ifdef _C_PROG_BUILTIN
 {
 	return Prog_Nam_S;
+}
+#endif
+;
+
+void Prog_Print(const char* text)
+#ifdef _C_PROG_BUILTIN
+{
+    fputs(text,stdout);
 }
 #endif
 ;

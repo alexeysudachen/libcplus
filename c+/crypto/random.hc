@@ -1,20 +1,9 @@
 
 /*
 
-Copyright © 2010-2012, Alexéy Sudachén, alexey@sudachen.name
-DesaNova Ltda, http://desanova.com/libcplus, Viña del Mar, Chile.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-http://www.gnu.org/licenses/
+Copyright © 2010-2016, Alexéy Sudachén, alexey@sudachen.name
+http://libcplus.keepmywork.com/
+See license rules in C+.hc
 
 */
 
@@ -26,6 +15,7 @@ http://www.gnu.org/licenses/
 #endif
 
 #include "C+.hc"
+#include "../crc.hc"
 #include "sha1.hc"
 
 #ifdef __windoze
@@ -45,6 +35,15 @@ http://www.gnu.org/licenses/
 # define _C_RANDOM_EXTERN extern
 # define _C_RANDOM_BUILTIN_CODE(Code)
 #endif
+
+enum
+{
+    Oj_RANDOM_GROUP = Oj_CRC_GROUP_END,
+    Oj_Random_32_OjMID,
+    Oj_Random_Flt_OjMID,
+    Oj_Random_OjMID,
+    Oj_RANDOM_GROUP_END,
+};
 
 void Soft_Random(void *_bits, int count)
 #ifdef _C_RANDOM_BUILTIN
@@ -268,7 +267,6 @@ uint_t Fast_Random_Temper(C_FASTRND *random)
 #endif
 ;
 
-_C_RANDOM_EXTERN char Oj_Random_32_OjMID[] _C_RANDOM_BUILTIN_CODE( = "random_32/@"); 
 uint_t Oj_Random_32(void *random) _C_RANDOM_BUILTIN_CODE(
 { 
 	return ((uint_t(*)(void*))
@@ -276,7 +274,6 @@ uint_t Oj_Random_32(void *random) _C_RANDOM_BUILTIN_CODE(
 			(random); 
 });
 
-_C_RANDOM_EXTERN char Oj_Random_Flt_OjMID[] _C_RANDOM_BUILTIN_CODE( = "random_flt/@"); 
 float Oj_Random_Flt(void *random) _C_RANDOM_BUILTIN_CODE(
 { 
 	return ((float(*)(void*))
@@ -284,7 +281,6 @@ float Oj_Random_Flt(void *random) _C_RANDOM_BUILTIN_CODE(
 			(random); 
 });
 
-_C_RANDOM_EXTERN char Oj_Random_OjMID[] _C_RANDOM_BUILTIN_CODE( = "random/@ii"); 
 int Oj_Random(void *random,int min_val,int max_val) _C_RANDOM_BUILTIN_CODE(
 { 
 	return ((int(*)(void*,int,int))

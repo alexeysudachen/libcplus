@@ -1,20 +1,9 @@
 
 /*
 
-Copyright © 2010-2012, Alexéy Sudachén, alexey@sudachen.name
-DesaNova Ltda, http://desanova.com/libcplus, Viña del Mar, Chile.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-http://www.gnu.org/licenses/
+Copyright © 2010-2016, Alexéy Sudachén, alexey@sudachen.name
+http://libcplus.keepmywork.com/
+See license rules in C+.hc
 
 */
 
@@ -527,11 +516,11 @@ void *Array_Refs(void)
 #ifdef _C_ARRAY_BUILTIN
 {
 	static C_FUNCTABLE funcs[] = 
-	{ {0,C_REF_ARRAY_TYPEID},
+    { {0,(void*)C_REF_ARRAY_TYPEID},
 	{Oj_Destruct_OjMID,         Array_Destruct},
 	{Oj_Destruct_Element_OjMID, __Unrefe},
 	{Oj_Count_OjMID,            Array_Count},
-	{0}};
+    {0,}};
 	C_ARRAY *arr = __Object(sizeof(C_ARRAY),funcs);
 	return arr;
 }

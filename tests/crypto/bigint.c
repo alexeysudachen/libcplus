@@ -1,6 +1,6 @@
 
-#include <c+/bigint.hc>
 #include <c+/program.hc>
+#include <c+/crypto/bigint.hc>
 
 int main(int argc, char **argv)
   {

@@ -1,3 +1,10 @@
+/*
+
+Copyright © 2010-2016, Alexéy Sudachén, alexey@sudachen.name
+http://libcplus.keepmywork.com/
+See license rules in C+.hc
+
+*/
 
 #ifndef C_once_BD92B6D2_8BD6_43FB_A8FE_4CD6143CF68D
 #define C_once_BD92B6D2_8BD6_43FB_A8FE_4CD6143CF68D
