@@ -25,6 +25,7 @@ static void *Prog_Data_Opts = 0;
 static void *Prog_Data_Args = 0;
 static char *Prog_Dir_S = 0;
 static char *Prog_Nam_S = 0;
+static char *Prog_Arg_Nam_S = 0;
 #endif
 
 enum _C_ROG_FLAGS
@@ -204,6 +205,7 @@ void Prog_Clear_At_Exit(void)
 	C_Global_Cleanup();
 	free(Prog_Dir_S);
 	free(Prog_Nam_S);
+    free(Prog_Arg_Nam_S);
 }
 #endif
 ;
@@ -224,7 +226,6 @@ int Prog_Init(int argc, char **argv, char *patt, unsigned flags, ...)
 	{
 		setlocale(LC_NUMERIC,"C");
 		setlocale(LC_TIME,"C");
-		Prog_Parse_Command_Line(argc,argv,patt,flags);
 #ifdef __windoze
 		__Gogo
 		{
@@ -236,12 +237,15 @@ int Prog_Init(int argc, char **argv, char *patt, unsigned flags, ...)
 #else
 		Prog_Nam_S = __Retain(Path_Fullname(argv[0]));
 #endif
+        Prog_Arg_Nam_S = __Retain(Path_Basename(argv[0]));
 		Prog_Dir_S = __Retain(Path_Dirname(Prog_Nam_S));
 		REQUIRE(Prog_Dir_S != 0);
 		rt = 1;
 		atexit(Prog_Clear_At_Exit);
 
-		if ( (flags & PROG_USAGE_ON_NOARGS) && !Prog_Arguments_Count() )
+        Prog_Parse_Command_Line(argc,argv,patt,flags);
+
+        if ( (flags & PROG_USAGE_ON_NOARGS) && !Prog_Arguments_Count() )
 		{
 			rt = usage(PROG_USAGE_ON_NOARGS);
             if ( flags & PROG_EXIT_ON_NOARGS )
@@ -530,6 +534,14 @@ char *Prog_Fullname()
 #ifdef _C_PROG_BUILTIN
 {
 	return Prog_Nam_S;
+}
+#endif
+;
+
+char *Prog_Name()
+#ifdef _C_PROG_BUILTIN
+{
+    return Prog_Arg_Nam_S;
 }
 #endif
 ;
