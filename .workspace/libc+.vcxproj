@@ -75,6 +75,7 @@
     <None Include="..\c+\db\xddbsql_.hc" />
     <None Include="..\c+\dicto.hc" />
     <None Include="..\c+\file.hc" />
+    <None Include="..\c+\inspector.hc" />
     <None Include="..\c+\minilog.hc" />
     <None Include="..\c+\oj.hc" />
     <None Include="..\c+\program.hc" />

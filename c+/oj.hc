@@ -166,7 +166,7 @@ void Oj_Erase(void *self, int index, int count)
 	else
 	{
 		void *(*erase)(void *,int,int) = C_Find_Method_Of(&self,Oj_Erase_OjMID,C_RAISE_ERROR);
-		return erase(self,index,count);
+		erase(self,index,count);
 	}
 }
 #endif
@@ -235,6 +235,7 @@ void Oj_Del(void *self, char *key)
 __Inline void *Oj_Array() { return Array_Refs(); }
 __Inline void *Oj_Dicto() { return Dicto_Refs(); }
 
+/*
 char *Oj_String(char *text)
 #ifdef _C_OJ_BUILTIN
 {
@@ -242,5 +243,6 @@ char *Oj_String(char *text)
 }
 #endif
 ;
+*/
 
 #endif /* C_once_9BC53BB4_C8E2_49F9_98D7_180BECC3819D */

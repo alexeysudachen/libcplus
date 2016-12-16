@@ -199,6 +199,9 @@
     <None Include="..\c+\oj.hc">
       <Filter>C+</Filter>
     </None>
+    <None Include="..\c+\inspector.hc">
+      <Filter>C+</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\basic\array.c">

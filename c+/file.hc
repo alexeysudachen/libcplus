@@ -104,7 +104,7 @@ void File_Check_Error(char *op, FILE *f, char *fname, int look_to_errno)
 char *Path_Basename(char *path)
 #ifdef _C_FILE_BUILTIN
 {
-	char *ret = path;
+	char *ret = 0;
 	if ( path )
 	{
 		char *p = strrchr(path,'/');
@@ -112,8 +112,10 @@ char *Path_Basename(char *path)
 		char *p2 = strrchr(path,'\\');
 		if ( !p || p < p2 ) p = p2;
 #endif
-		if ( p )
-			ret = Str_Copy(p+1);
+		if (p)
+			ret = Str_Copy(p + 1);
+		else
+			ret = Str_Copy(path);
 	}
 	return ret;
 }

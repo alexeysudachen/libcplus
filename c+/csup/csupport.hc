@@ -14,6 +14,12 @@ it is included by C+.hc
 
 */
 
+#ifdef __windoze
+#include <Psapi.h>
+#pragma comment(lib,"Psapi.lib")
+#pragma comment(lib,"Dbghelp.lib")
+#endif
+
 #define __try 1___SEH_try_is_disabled___1
 #define __except 1___SEH_except_is_disabled___1
 
@@ -637,45 +643,90 @@ char *C__basename(char *S)
 #endif
 ;
 
-char *C_Btrace_Format(int frames, void **cbk)
+__No_Inline
+char *C_Btrace_Format(size_t frames, void **cbk, char *bt, size_t max_bt, size_t tabs)
 #ifdef _C_CORE_BUILTIN
 {
-	int  max_bt = 4096;
-	char *bt = __Malloc(max_bt);
-	char *bt_p = bt;
+#if defined __windoze
+	SYMBOL_INFO  *symbol;
+	HMODULE *modules; 
+	uint32_t modules_size;
+	size_t   modules_count;
+	char module_name[256] = {0 ,};
+#endif
 	int i;
+	char *bt_p;
 
-	i = 0;//snprintf(bt_p,max_bt,("--backtrace--",0));
-	bt_p+=i;
-	max_bt-=i;
+	if (!bt)
+	{
+		max_bt = 4096;
+		bt = (char*)__Malloc(max_bt);
+	}
+	bt_p = bt;
 	memset(bt_p,0,max_bt--);
 
-	for ( i = 0; i < frames; ++i )
-	{
-#if defined __windoze || defined __CYGWIN__
-		int dif = 0;
-		char c = '+';
-		int l = snprintf(bt_p,max_bt,("\n %-2d=> %s %c%x (%p at %s)"),
-			i,
-			"",
-			c,
-			dif>0?dif:-dif,
-			cbk[i],
-			C__basename("basename"));
+#if defined __windoze
+	SymInitialize(GetCurrentProcess(), NULL, TRUE);
+	symbol = (SYMBOL_INFO *)alloca(sizeof(SYMBOL_INFO) + 256);
+	symbol->MaxNameLen = 255;
+	symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+	EnumProcessModules(GetCurrentProcess(), 0, 0, &modules_size);
+	modules = (HMODULE*)alloca(modules_size);
+	if (EnumProcessModules(GetCurrentProcess(), modules, modules_size, &modules_size))
+		modules_count = modules_size / sizeof(HMODULE);
+#endif
 
-		if ( l > 0 )
+	for (i = 0; i < frames; ++i)
+	{
+		if (!cbk[i]) continue;
+		if (max_bt <= tabs) break;
+		memset(bt_p, '\t', tabs); max_bt -= tabs; bt_p += tabs;
+
+#if defined __windoze 
+		
+		int l;
+		uint64_t dif = 0;
+		HMODULE hmod = 0;
+		for (l = 0; l < modules_count; ++l)
+			if (hmod < modules[l] && cbk[i] > modules[l])
+				hmod = modules[l];
+		if (!hmod)
+			module_name[0] = 0;
+		else
+			GetModuleFileNameA(hmod, module_name, sizeof(module_name) - 1);
+		
+		if (SymFromAddr(GetCurrentProcess(), (uint64_t)cbk[i], &dif, symbol))
+		{
+			l = snprintf(bt_p, max_bt, ("%-2d=> %s +%x %p:%s\n"),
+				i,
+				symbol->Name,
+				(uint32_t)dif,
+				cbk[i],
+				module_name
+				);
+		}
+		else
+		{
+			l = snprintf(bt_p, max_bt, ("%-2d=> %p:%s\n"),
+				i,
+				cbk[i],
+				module_name
+				);
+		}
+
+		if (l > 0)
 		{
 			max_bt -= l;
 			bt_p += l;
 		}
-
+		else break;
 #else
 		Dl_info dlinfo = {0};
 		if ( dladdr(cbk[i], &dlinfo) )
 		{
 			int dif = (char*)cbk[i]-(char*)dlinfo.dli_saddr;
 			char c = dif > 0?'+':'-';
-			int l = snprintf(bt_p,max_bt,("\n %-2d=> %s %c%x (%p at %s)"),
+			int l = snprintf(bt_p,max_bt,("%-2d=> %s %c%x (%p at %s)\n"),
 				i,
 				dlinfo.dli_sname,
 				c,
@@ -687,6 +738,7 @@ char *C_Btrace_Format(int frames, void **cbk)
 				max_bt -= l;
 				bt_p += l;
 			}
+			else break;
 		}
 #endif
 	}
@@ -696,23 +748,24 @@ char *C_Btrace_Format(int frames, void **cbk)
 #endif
 ;
 
+__No_Inline
 char *C_Btrace(void)
 #ifdef _C_CORE_BUILTIN
 {
-	void *cbk[128] = {0};
-	int frames = backtrace(cbk,127);
-	return C_Btrace_Format(frames,cbk);
+	void *cbk[32] = {0};
+	int frames = backtrace(cbk,32);
+	return C_Btrace_Format(frames,cbk,0,0,1);
 }
 #endif
 ;
 
+__No_Inline
 void C_Print_Btrace(void)
 #ifdef _C_CORE_BUILTIN
 {
-	void *cbk[128] = {0};
-	int frames = backtrace(cbk,127);
-	C_Print_Line(("--backtrace--"));
-	C_Print_Line(C_Btrace_Format(frames,cbk));
+	void *cbk[32] = {0};
+	int frames = backtrace(cbk,32);
+	C_Print_Line(C_Btrace_Format(frames,cbk,0,0,1));
 }
 #endif
 ;
@@ -721,7 +774,7 @@ void C_Print_Btrace(void)
 
 int backtrace( void **cbk, int count )
 {
-	return 0;
+	return CaptureStackBackTrace(1, count, cbk, NULL);
 }
 
 #elif defined __GNUC__ && defined _C_CORE_BUILTIN \
@@ -816,15 +869,16 @@ int C_Error_Line(void)
 #endif
 ;
 
+__No_Inline
 char *C_Error_Btrace(void)
 #ifdef _C_CORE_BUILTIN
 {
 	C_ERROR_INFO *info = C_Error_Info();
 	if ( info && info->bt_count )
 	{
-		return C_Btrace_Format(info->bt_count,info->bt_cbk);
+		return C_Btrace_Format(info->bt_count,info->bt_cbk,0,0,1);
 	}
-	return ("--backtrace--\n   unavailable");
+	return ("\tbacktrace unavailable");
 }
 #endif
 ;

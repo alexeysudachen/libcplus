@@ -508,11 +508,3 @@ void *Oj_Clone(void *p)
 #endif
 ;
 
-int Oj_Count(void *self)
-#ifdef _C_CORE_BUILTIN
-{
-    int (*count)(void *) = C_Find_Method_Of(&self,Oj_Count_OjMID,C_RAISE_ERROR);
-    return count(self);
-}
-#endif
-;

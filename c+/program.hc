@@ -205,7 +205,7 @@ void Prog_Clear_At_Exit(void)
 	C_Global_Cleanup();
 	free(Prog_Dir_S);
 	free(Prog_Nam_S);
-    free(Prog_Arg_Nam_S);
+	free(Prog_Arg_Nam_S);
 }
 #endif
 ;

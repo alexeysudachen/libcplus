@@ -124,6 +124,14 @@ Don't foget to use -rdynamic to see symbols in backtrace!
 /* __BSD_VISIBLE defined by default! */
 #endif
 
+#if defined _HEAPINSPECTOR
+#define malloc __Stdlib_malloc
+#define calloc __Stdlib_calloc
+#define free   __Stdlib_free
+#define _msize __Msvc_memblock_size
+#endif
+
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <setjmp.h>
@@ -141,12 +149,7 @@ Don't foget to use -rdynamic to see symbols in backtrace!
 #include <math.h>
 #include <locale.h>
 
-#if defined __QNX__
-#	define __blackberry
-#endif
-
-#if defined __i386 || defined __x86_64 \
-	|| ( defined __arm__ && ( defined __blackberry ) )
+#if defined __i386 || defined __x86_64 || defined __arm__
 #	define __little_endian
 #endif
 
@@ -228,6 +231,8 @@ int backtrace( void **cbk, int count );
 #else
 #	define backtrace(Cbk,Count) (0)
 #endif
+
+char *C_Btrace_Format(size_t frames, void **cbk, char *bt, size_t max_bt, size_t tabs);
 
 #ifdef __windoze
 #	define DECLSPEC_EXPORT __declspec(dllexport)
@@ -529,6 +534,10 @@ __No_Return void _C_Raise(int err,char *msg,char *filename,int lineno);
 void C_Xchg_Unlock_Proc(int volatile *p) _C_CORE_BUILTIN_CODE({Atomic_CmpXchg(p,0,1);});
 
 #endif /* _THREADS */
+
+#if defined _HEAPINSPECTOR
+#	include "inspector.hc"
+#endif
 
 #include "csup/tls.hc"
 
